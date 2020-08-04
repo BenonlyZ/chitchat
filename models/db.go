@@ -14,7 +14,7 @@ var Db *sql.DB
 
 func init() {
 	var err error
-	Db, err = sql.Open("mysql", "root:root@/chitchat?charset=utf8&parseTime=true")
+	Db, err = sql.Open("", "")
 	if err != nil {
 		log.Fatal(err)
 	}
