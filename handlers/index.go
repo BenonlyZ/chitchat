@@ -8,12 +8,12 @@ import (
 
 // 论坛首页路由处理器方法
 func Index(w http.ResponseWriter, r *http.Request) {
-	/*	files := []string{"chitchat/views/layout.html", "chitchat/views/navbar.html", "chitchat/views/index.html"}
-		templates := template.Must(template.ParseFiles(files...))
-		threads, err := models.Threads()
-		if err == nil {
-			templates.ExecuteTemplate(w, threads, "layout", "navbar", "index")
-		}
+	/* files := []string{"views/layout.html", "views/navbar.html", "views/index.html"}
+	templates := template.Must(template.ParseFiles(files...))
+	threads, err := models.Threads()
+	if err == nil {
+		templates.ExecuteTemplate(w, "layout", threads)
+	}
 	*/
 	threads, err := models.Threads()
 	if err == nil {
@@ -23,5 +23,15 @@ func Index(w http.ResponseWriter, r *http.Request) {
 		} else {
 			generateHTML(w, threads, "layout", "auth.navbar", "index") //有账户登录时调用
 		}
+	}
+}
+
+func Err(writer http.ResponseWriter, request *http.Request) {
+	vals := request.URL.Query()
+	_, err := session(writer, request)
+	if err != nil {
+		generateHTML(writer, vals.Get("msg"), "layout", "navbar", "error")
+	} else {
+		generateHTML(writer, vals.Get("msg"), "layout", "auth.navbar", "error")
 	}
 }
